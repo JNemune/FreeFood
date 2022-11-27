@@ -1,12 +1,13 @@
-from datetime import datetime
-from json import dump
+import pyrogram
+from pyrogram import Client, filters
 
-from pyrogram import Client
+from Checker import checker
 
 with open(".\\target\\config.txt", "r") as f:
     api_id, api_hash, admin_id, target1 = [
-        i.strip() for i in f.readlines() if i[0] != "#"
+        i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
     ]
+
 
 app = Client(
     "FreeFood",
@@ -16,17 +17,13 @@ app = Client(
 )
 
 
-async def main():
-    out = set()
-    async with app:
-        async for chat in app.get_chat_history(target1):
-            if chat.date < datetime(2022, 9, 18, 0, 0, 0):
-                break
-            out.add(chat.text)
-        print(chat.date)
-    with open("out.json", "a", encoding="utf-8") as f:
-        dump(list(out), f, ensure_ascii=False)
+@app.on_message(filters.chat(int(target1)))
+async def echo(client, m: pyrogram.types.messages_and_media.message.Message):
+    if checker(m.text):
+        await m.reply("استفاده")
+        await app.send_message(m.from_user.id, "سلام")
+        await app.send_message(m.from_user.id, "من میتونم غذاتون رو استفاده کنم؟")
 
 
 if __name__ == "__main__":
-    app.run(main())
+    app.run()
