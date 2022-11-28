@@ -1,8 +1,9 @@
 from json import load
+from os import path
 
 
-def checker(inp, type):
-    match type:
+def checker(inp, type_):
+    match type_:
         case "FAN1":
             if (
                 "فنی" in inp
@@ -46,7 +47,7 @@ if __name__ == "__main__":
         "متفرقه": "ETC.",
         "تعویض": "CHNG",
     }
-    with open(".\\resault.json", "r", encoding="UTF-8") as f:
+    with open(path.join(".", "resault.json"), "r", encoding="UTF-8") as f:
         resault = load(f)
 
     for i in tranc:

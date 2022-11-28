@@ -1,9 +1,11 @@
+from os import path
+
 import pyrogram
 from pyrogram import Client, filters
 
 from Checker import checker
 
-with open(".\\target\\config.txt", "r") as f:
+with open(path.join(".", "target", "config.txt"), "r") as f:
     api_id, api_hash, admin_id, target1 = [
         i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
     ]
