@@ -24,11 +24,34 @@ def checker(inp, type_):
                 )
             ):
                 return True
+        case "FAN2":
+            if (
+                "فنی" in inp
+                and "بالا" in inp
+                and not (
+                    "تعویض" in inp
+                    or "معاوضه" in inp
+                    or "میخوام" in inp
+                    or "عوض" in inp
+                    or "میخام" in inp
+                    or "می\u200cخوام" in inp
+                    or ("پایین" in inp and "بالا" in inp)
+                    or "کوی" in inp
+                    or "جابه جایی" in inp
+                    or "جابجایی" in inp
+                    or "جا به جایی" in inp
+                    or len(inp) > 37
+                )
+            ):
+                return True
+        case "MODR":
+            if "کد" in inp and "دارم" in inp:
+                return True
     return False
 
 
 if __name__ == "__main__":
-    test_case = "FAN1"
+    test_case = "FAN2"
 
     tranc = {
         "بالا": "FAN2",

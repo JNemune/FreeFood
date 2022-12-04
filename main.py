@@ -17,11 +17,12 @@ app = Client(
     api_hash,
     proxy={"scheme": "socks5", "hostname": "127.0.0.1", "port": 9051},
 )
+self_ = ["FAN1", "FAN2"][int(input("0: FAN1, 1: FAN2\n"))]
 
 
 @app.on_message(filters.chat(int(target1)))
 async def process(client, m: pyrogram.types.messages_and_media.message.Message):
-    if checker(m.text, "FAN1"):
+    if checker(m.text, self_):
         await m.reply("استفاده")
         await app.send_message(m.from_user.id, "سلام")
         await app.send_message(m.from_user.id, "من میتونم غذاتون رو استفاده کنم؟")
