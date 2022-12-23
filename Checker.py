@@ -1,3 +1,4 @@
+import re
 from json import load
 from os import path
 
@@ -47,11 +48,16 @@ def checker(inp, type_):
         case "MODR":
             if "کد" in inp and "دارم" in inp:
                 return True
+        case "MEHR":
+            pattern = r"(کد)* *(سلف)* *(مهر) *(کد)* *(دارم)\.*|(سلف مهر\.*)|(کد مهر\.*)"
+            prog = re.compile(pattern)
+            res = prog.fullmatch(inp)
+            return bool(res)
     return False
 
 
 if __name__ == "__main__":
-    test_case = "FAN2"
+    test_case = "MEHR"
 
     tranc = {
         "بالا": "FAN2",
