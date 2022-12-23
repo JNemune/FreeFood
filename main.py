@@ -46,6 +46,9 @@ class Run(object):
             elif m.text in ["FAN1", "FAN2"]:
                 self.self_ = m.text
                 await m.reply("درحال انجام ...")
+            elif m.text == "OFF":
+                self.self_ = None
+                await m.reply("کنسل شد.")
             else:
                 await m.reply("متوجه نشدم :(")
 
