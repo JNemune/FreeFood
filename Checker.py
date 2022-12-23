@@ -49,7 +49,9 @@ def checker(inp, type_):
             if "کد" in inp and "دارم" in inp:
                 return True
         case "MEHR":
-            pattern = r"(کد)* *(سلف)* *(مهر) *(کد)* *(دارم)\.*|(سلف مهر\.*)|(کد مهر\.*)"
+            if len(inp) > 35:
+                return False
+            pattern = r"(سلام)*\s*(امروز)*\s*(نا*هار)*\s*(کد)*\s*(سلف)*\s*(مهر)\s*(.{2,12})*\s*((دارم)|(میخواد)|(میخاد))\s*\.*\?*؟*|(سلف مهر\.*\s*(اهدایی)*\.*)|(کد مهر\.*\s*(اهدایی)*)"
             prog = re.compile(pattern)
             res = prog.fullmatch(inp)
             return bool(res)
