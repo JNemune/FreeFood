@@ -41,14 +41,14 @@ class Run(object):
     def runner(self):
         @self.app.on_message(filters.chat(int(self.admin_id)))
         async def runner(client, m: pyrogram.types.messages_and_media.message.Message):
-            if self.self_:
+            if m.text == "OFF":
+                self.self_ = None
+                await m.reply("کنسل شد.")
+            elif self.self_:
                 await m.reply("ربات در حال اجرا است. صبور باشید.")
             elif m.text in ["FAN1", "FAN2", "MEHR"]:
                 self.self_ = m.text
                 await m.reply("درحال انجام ...")
-            elif m.text == "OFF":
-                self.self_ = None
-                await m.reply("کنسل شد.")
             else:
                 await m.reply("متوجه نشدم :(")
 
