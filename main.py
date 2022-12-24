@@ -43,7 +43,7 @@ class Run(object):
         async def runner(client, m: pyrogram.types.messages_and_media.message.Message):
             if self.self_:
                 await m.reply("ربات در حال اجرا است. صبور باشید.")
-            elif m.text in ["FAN1", "FAN2"]:
+            elif m.text in ["FAN1", "FAN2", "MEHR"]:
                 self.self_ = m.text
                 await m.reply("درحال انجام ...")
             elif m.text == "OFF":
