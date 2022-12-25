@@ -1,17 +1,15 @@
-from os import path
-
+import json
 import pyrogram
 from pyrogram import Client, filters
 
 from Checker import checker
 
 
-class Run(object):
+class FreeFood(object):
     def __init__(self):
-        with open(path.join(".", "target", "config.txt"), "r") as f:
-            self.api_id, self.api_hash, self.admin_id, self.target1 = [
-                i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
-            ]
+        with open("./config.json", "r") as f:
+            conf = json.load(f)
+            self.api_id, self.api_hash, self.admin_id, self.target1 = conf.values()
 
         self.app = Client(
             "FreeFood",
@@ -54,4 +52,4 @@ class Run(object):
 
 
 if __name__ == "__main__":
-    Run()
+    FreeFood()
