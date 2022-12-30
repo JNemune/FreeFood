@@ -1,3 +1,4 @@
+import asyncio
 from os import path
 
 import pyrogram
@@ -13,12 +14,7 @@ class Run(object):
                 i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
             ]
 
-        self.app = Client(
-            "FreeFood",
-            self.api_id,
-            self.api_hash,
-            proxy={"scheme": "socks5", "hostname": "127.0.0.1", "port": 9051},
-        )
+        self.app = Client("FreeFood")
         self.self_ = None
 
         self.process()
@@ -29,14 +25,17 @@ class Run(object):
         @self.app.on_message(filters.chat(int(self.target1)))
         async def process(client, m: pyrogram.types.messages_and_media.message.Message):
             if self.self_ and checker(m.text, self.self_):
+                self.self_ = None
+                await self.app.send_message(self.admin_id, "انجام شد.")
+
+                await asyncio.sleep(0.5)
                 await m.reply("استفاده")
+
+                await asyncio.sleep(1)
                 await self.app.send_message(m.from_user.id, "سلام")
                 await self.app.send_message(
                     m.from_user.id, "من میتونم غذاتون رو استفاده کنم؟"
                 )
-
-                self.self_ = None
-                await self.app.send_message(self.admin_id, "انجام شد.")
 
     def runner(self):
         @self.app.on_message(filters.chat(int(self.admin_id)))
