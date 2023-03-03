@@ -71,3 +71,16 @@ class Run(object):
 
 if __name__ == "__main__":
     Run()
+
+    # with open(path.join(".", "target", "config.txt"), "r") as f:
+    #     api_id, api_hash, admin_id, target1 = [
+    #         i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
+    #     ]
+    # app = Client("FreeFood", api_id, api_hash)
+
+    # async def main():
+    #     async with app:
+    #         async for dialog in app.get_dialogs():
+    #             print(dialog.chat.title or dialog.chat.first_name, dialog.chat.id)
+
+    # app.run(main())
