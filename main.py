@@ -33,7 +33,7 @@ class Run(object):
                 await asyncio.sleep(self.delay)
                 await m.reply("استفاده")
 
-                await asyncio.sleep(4)
+                await asyncio.sleep(self.delay)
                 await self.app.send_message(
                     m.from_user.id,
                     choice(
@@ -43,14 +43,14 @@ class Run(object):
                             "کد رو محبت میکنید؟",
                             "سلام. غذا دارید؟",
                             "سلام\nکد دارید؟",
-                            "ممنون می",
+                            "ممنون میشم غذاتون رو بدید به من",
                             "سلام غذاتونو میدید به من",
                         ]
                     ),
                 )
 
     def runner(self):
-        @self.app.on_message(filters.chat(int(self.admin_id)))
+        @self.app.on_message(filters.chat(self.admin_id))
         async def runner(client, m: pyrogram.types.messages_and_media.message.Message):
             if m.text.split()[0] == "delay":
                 self.delay = float(m.text.split()[1])
