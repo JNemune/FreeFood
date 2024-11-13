@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from os import path
 from random import choice
 
@@ -15,25 +16,32 @@ class Run(object):
                 i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
             ]
 
-        self.app = Client("FreeFood", self.api_id, self.api_hash)
+        self.app = Client(
+            sys.argv[1],
+            self.api_id,
+            self.api_hash,
+            # proxy={"scheme": "socks5", "hostname": "127.0.0.1", "port": 10808},
+        )
         self.self_ = []
-        self.delay = 0.5
+        self.delay = 0.0
 
         self.process()
         self.runner()
         self.app.run()
 
+        # self.get_dialogs()
+        # self.get_history(self.target1)
+
     def process(self):
         @self.app.on_message(filters.chat(int(self.target1)))
         async def process(client, m: pyrogram.types.messages_and_media.message.Message):
             if self.self_ and any([checker(m.text, i) for i in self.self_]):
-                self.self_ = []
-                await self.app.send_message(self.admin_id, "انجام شد.")
-
-                await asyncio.sleep(self.delay)
+                if self.delay != 0.0:
+                    await asyncio.sleep(self.delay)
                 await m.reply("استفاده")
 
-                await asyncio.sleep(self.delay)
+                if self.delay != 0.0:
+                    await asyncio.sleep(self.delay)
                 await self.app.send_message(
                     m.from_user.id,
                     choice(
@@ -48,6 +56,9 @@ class Run(object):
                         ]
                     ),
                 )
+
+                self.self_ = []
+                await self.app.send_message(self.admin_id, "انجام شد.")
 
     def runner(self):
         @self.app.on_message(filters.chat(int(self.admin_id)))
@@ -68,19 +79,23 @@ class Run(object):
             else:
                 await m.reply("متوجه نشدم :(")
 
+    def get_history(self, target):
+        async def main():
+            async with self.app:
+                async for message in self.app.get_chat_history(int(target)):
+                    print(message.text)
+                    break
+
+        self.app.run(main())
+
+    def get_dialogs(self):
+        async def main():
+            async with self.app:
+                async for dialog in self.app.get_dialogs():
+                    print(dialog.chat.title or dialog.chat.first_name, dialog.chat.id)
+
+        self.app.run(main())
+
 
 if __name__ == "__main__":
     Run()
-
-    # with open(path.join(".", "target", "config.txt"), "r") as f:
-    #     api_id, api_hash, admin_id, target1 = [
-    #         i.strip() for i in f.readlines() if i != "\n" and i[0] != "#"
-    #     ]
-    # app = Client("FreeFood", api_id, api_hash)
-
-    # async def main():
-    #     async with app:
-    #         async for dialog in app.get_dialogs():
-    #             print(dialog.chat.title or dialog.chat.first_name, dialog.chat.id)
-
-    # app.run(main())
